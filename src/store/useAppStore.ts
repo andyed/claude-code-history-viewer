@@ -253,7 +253,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       const duration = performance.now() - start;
       if (import.meta.env.DEV) {
         console.log(
-          `🚀 [Frontend] scanProjects: ${
+          `[Frontend] scanProjects: ${
             projects.length
           }개 프로젝트, ${duration.toFixed(1)}ms`
         );
@@ -333,7 +333,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
       const duration = performance.now() - start;
       if (import.meta.env.DEV) {
         console.log(
-          `🚀 [Frontend] selectSession: ${filteredMessages.length}개 메시지 로드, ${duration.toFixed(1)}ms`
+          `[Frontend] selectSession: ${filteredMessages.length}개 메시지 로드, ${duration.toFixed(1)}ms`
         );
       }
 
