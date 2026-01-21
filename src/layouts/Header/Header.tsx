@@ -71,61 +71,59 @@ export const Header = () => {
       </div>
 
       {/* Center: Navigation Tabs */}
-      {selectedProject && (
-        <nav className="flex items-center gap-1 p-1 rounded-lg bg-muted/50">
-          {selectedSession && (
-            <NavTab
-              icon={MessageSquare}
-              label={tComponents("message.view")}
-              isActive={computed.isMessagesView}
-              onClick={() => {
-                if (!computed.isMessagesView) {
-                  analyticsActions.switchToMessages();
-                }
-              }}
-            />
-          )}
+      <nav className="flex items-center gap-1 p-1 rounded-lg bg-muted/50">
+        {selectedSession && (
           <NavTab
-            icon={BarChart3}
-            label={tComponents("analytics.dashboard")}
-            isActive={computed.isAnalyticsView}
+            icon={MessageSquare}
+            label={tComponents("message.view")}
+            isActive={computed.isMessagesView}
             onClick={() => {
-              if (computed.isAnalyticsView) {
+              if (!computed.isMessagesView) {
                 analyticsActions.switchToMessages();
-              } else {
-                handleLoadAnalytics();
               }
             }}
           />
-          <NavTab
-            icon={Activity}
-            label={tMessages("tokenStats.existing")}
-            isActive={computed.isTokenStatsView}
-            isLoading={computed.isAnyLoading}
-            onClick={() => {
-              if (computed.isTokenStatsView) {
-                analyticsActions.switchToMessages();
-              } else {
-                handleLoadTokenStats();
-              }
-            }}
-            disabled={computed.isAnyLoading}
-          />
-          <NavTab
-            icon={FileEdit}
-            label={tComponents("recentEdits.title")}
-            isActive={computed.isRecentEditsView}
-            onClick={() => {
-              if (computed.isRecentEditsView) {
-                analyticsActions.switchToMessages();
-              } else {
-                handleLoadRecentEdits();
-              }
-            }}
-            disabled={computed.isAnyLoading}
-          />
-        </nav>
-      )}
+        )}
+        <NavTab
+          icon={BarChart3}
+          label={tComponents("analytics.dashboard")}
+          isActive={computed.isAnalyticsView}
+          onClick={() => {
+            if (computed.isAnalyticsView) {
+              analyticsActions.switchToMessages();
+            } else {
+              handleLoadAnalytics();
+            }
+          }}
+        />
+        <NavTab
+          icon={Activity}
+          label={tMessages("tokenStats.existing")}
+          isActive={computed.isTokenStatsView}
+          isLoading={computed.isAnyLoading}
+          onClick={() => {
+            if (computed.isTokenStatsView) {
+              analyticsActions.switchToMessages();
+            } else {
+              handleLoadTokenStats();
+            }
+          }}
+          disabled={computed.isAnyLoading}
+        />
+        <NavTab
+          icon={FileEdit}
+          label={tComponents("recentEdits.title")}
+          isActive={computed.isRecentEditsView}
+          onClick={() => {
+            if (computed.isRecentEditsView) {
+              analyticsActions.switchToMessages();
+            } else {
+              handleLoadRecentEdits();
+            }
+          }}
+          disabled={computed.isAnyLoading}
+        />
+      </nav>
 
       {/* Right: Actions */}
       <div className="flex items-center gap-1">
