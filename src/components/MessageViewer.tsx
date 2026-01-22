@@ -245,39 +245,52 @@ const getAgentIdFromProgress = (message: ClaudeMessage): string | null => {
 };
 
 // Group consecutive agent progress messages by agentId
+// Only groups progress messages that appear consecutively in the message list
 const groupAgentProgressMessages = (
   messages: ClaudeMessage[]
 ): Map<string, { entries: AgentProgressEntry[]; messageUuids: Set<string> }> => {
   const groups = new Map<string, { entries: AgentProgressEntry[]; messageUuids: Set<string> }>();
-  const agentGroupMap = new Map<string, { leaderId: string; entries: AgentProgressEntry[]; messageUuids: Set<string> }>();
+
+  let prevAgentId: string | null = null;
+  let prevWasProgress = false;
+  let currentGroup: { leaderId: string; entries: AgentProgressEntry[]; messageUuids: Set<string> } | null = null;
 
   for (const msg of messages) {
     const agentId = getAgentIdFromProgress(msg);
-    if (!agentId) continue;
 
-    const entry: AgentProgressEntry = {
-      data: msg.data as ProgressData,
-      timestamp: msg.timestamp,
-      uuid: msg.uuid,
-    };
-
-    // Check if we have an existing group for this agentId
-    const existingGroup = agentGroupMap.get(agentId);
-    if (existingGroup) {
-      existingGroup.entries.push(entry);
-      existingGroup.messageUuids.add(msg.uuid);
-    } else {
-      // Start a new group for this agentId
-      const newGroup = {
-        leaderId: msg.uuid,
-        entries: [entry],
-        messageUuids: new Set([msg.uuid]),
+    if (agentId) {
+      // This is a progress message
+      const entry: AgentProgressEntry = {
+        data: msg.data as ProgressData,
+        timestamp: msg.timestamp,
+        uuid: msg.uuid,
       };
-      agentGroupMap.set(agentId, newGroup);
-      groups.set(msg.uuid, {
-        entries: newGroup.entries,
-        messageUuids: newGroup.messageUuids,
-      });
+
+      // Check if this continues the current group (same agentId and previous was also progress)
+      if (prevWasProgress && prevAgentId === agentId && currentGroup) {
+        // Append to current group
+        currentGroup.entries.push(entry);
+        currentGroup.messageUuids.add(msg.uuid);
+      } else {
+        // Start a new group
+        currentGroup = {
+          leaderId: msg.uuid,
+          entries: [entry],
+          messageUuids: new Set([msg.uuid]),
+        };
+        groups.set(msg.uuid, {
+          entries: currentGroup.entries,
+          messageUuids: currentGroup.messageUuids,
+        });
+      }
+
+      prevAgentId = agentId;
+      prevWasProgress = true;
+    } else {
+      // Not a progress message - reset tracking
+      prevAgentId = null;
+      prevWasProgress = false;
+      currentGroup = null;
     }
   }
 
@@ -426,14 +439,25 @@ const ClaudeMessageNode = React.memo(({ message, isCurrentMatch, isMatch, search
     return null;
   }
 
-  // Skip messages that are part of an agent task group (but not the leader)
+  // Render hidden placeholders for group members to preserve DOM nodes for search/highlight
   if (isAgentTaskGroupMember) {
-    return null;
+    return (
+      <div
+        data-message-uuid={message.uuid}
+        className="hidden"
+        aria-hidden="true"
+      />
+    );
   }
 
-  // Skip messages that are part of an agent progress group (but not the leader)
   if (isAgentProgressGroupMember) {
-    return null;
+    return (
+      <div
+        data-message-uuid={message.uuid}
+        className="hidden"
+        aria-hidden="true"
+      />
+    );
   }
 
   // Skip empty messages (no content, or only command tags)

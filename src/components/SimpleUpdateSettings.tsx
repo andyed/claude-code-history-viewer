@@ -110,6 +110,7 @@ export function SimpleUpdateSettings({
                   <SelectItem value="startup">{t('updateSettingsModal.intervalStartup')}</SelectItem>
                   <SelectItem value="daily">{t('updateSettingsModal.intervalDaily')}</SelectItem>
                   <SelectItem value="weekly">{t('updateSettingsModal.intervalWeekly')}</SelectItem>
+                  <SelectItem value="never">{t('updateSettingsModal.intervalNever', { defaultValue: 'Never' })}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

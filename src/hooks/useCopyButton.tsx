@@ -49,6 +49,8 @@ export const useCopyButton = () => {
     if (iconOnly) {
       return (
         <TooltipButton
+          type="button"
+          aria-label={label}
           onClick={() => copyToClipboard(text, id)}
           disabled={state === "copying"}
           className={`w-6 h-6 flex items-center justify-center rounded transition-colors ${
@@ -76,6 +78,8 @@ export const useCopyButton = () => {
     // Full button with text: consistent height
     return (
       <TooltipButton
+        type="button"
+        aria-label={label}
         onClick={() => copyToClipboard(text, id)}
         disabled={state === "copying"}
         className={`h-6 flex items-center gap-1 px-2 text-xs rounded transition-colors ${

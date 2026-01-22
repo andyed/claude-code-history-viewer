@@ -68,20 +68,24 @@ export const ToolUseRenderer = ({
     );
   };
 
+  // Helper to check if toolInput is a non-null object
+  const isObject = (value: unknown): value is Record<string, unknown> =>
+    typeof value === "object" && value !== null;
+
   // Check tool types
   const isWriteTool =
     toolName === "Write" ||
-    ("file_path" in toolInput && "content" in toolInput);
+    (isObject(toolInput) && "file_path" in toolInput && "content" in toolInput);
 
   const isEditTool =
     toolName === "Edit" ||
-    ("file_path" in toolInput &&
+    (isObject(toolInput) &&
+      "file_path" in toolInput &&
       "old_string" in toolInput &&
       "new_string" in toolInput);
 
   const isAssistantPrompt =
-    typeof toolInput === "object" &&
-    toolInput !== null &&
+    isObject(toolInput) &&
     "description" in toolInput &&
     "prompt" in toolInput &&
     typeof toolInput.description === "string" &&

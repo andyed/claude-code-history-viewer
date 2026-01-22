@@ -13,6 +13,7 @@
 import { ThinkingRenderer } from "./ThinkingRenderer";
 import { ToolUseRenderer } from "./ToolUseRenderer";
 import { ImageRenderer } from "./ImageRenderer";
+import { CommandRenderer } from "./CommandRenderer";
 import { ClaudeToolResultItem } from "../toolResultRenderer";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -124,6 +125,17 @@ export const ClaudeContentArrayRenderer = ({
                 currentMatchIndex={currentMatchIndex}
               />
             );
+
+          case "command": {
+            // Handle command items with content that may contain command XML
+            const commandContent = typeof item.content === "string" ? item.content : "";
+            if (!commandContent) return null;
+            return (
+              <div key={index} className={cn("border", layout.containerPadding, layout.rounded, getVariantStyles("system").container)}>
+                <CommandRenderer text={commandContent} searchQuery={searchQuery} />
+              </div>
+            );
+          }
 
           case "critical_system_reminder": {
             const reminderStyles = getVariantStyles("warning");

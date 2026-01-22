@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 
 interface UseResizablePanelOptions {
   defaultWidth: number;
@@ -10,7 +11,7 @@ interface UseResizablePanelOptions {
 interface UseResizablePanelReturn {
   width: number;
   isResizing: boolean;
-  handleMouseDown: (e: React.MouseEvent) => void;
+  handleMouseDown: (e: ReactMouseEvent<HTMLElement>) => void;
 }
 
 export function useResizablePanel({
@@ -37,7 +38,7 @@ export function useResizablePanel({
   const startWidthRef = useRef(0);
 
   const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
+    (e: ReactMouseEvent<HTMLElement>) => {
       e.preventDefault();
       setIsResizing(true);
       startXRef.current = e.clientX;

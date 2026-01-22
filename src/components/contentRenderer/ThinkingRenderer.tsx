@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { Bot, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -9,7 +9,7 @@ type Props = {
   searchQuery?: string;
 };
 
-export const ThinkingRenderer = ({ thinking, searchQuery }: Props) => {
+export const ThinkingRenderer = memo(function ThinkingRenderer({ thinking, searchQuery }: Props) {
   const { t } = useTranslation("components");
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -66,4 +66,4 @@ export const ThinkingRenderer = ({ thinking, searchQuery }: Props) => {
       )}
     </div>
   );
-};
+});

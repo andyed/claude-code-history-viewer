@@ -29,8 +29,8 @@ export function SimpleUpdateModal({ updater, isVisible, onClose }: SimpleUpdateM
   const currentVersion = updater.state.currentVersion;
   const newVersion = release.tag_name.replace('v', '');
 
-  const isImportant = release.body.toLowerCase().includes('security') ||
-                     release.body.toLowerCase().includes('critical');
+  const isImportant = (release.body ?? '').toLowerCase().includes('security') ||
+                     (release.body ?? '').toLowerCase().includes('critical');
 
   const handleDownload = () => {
     updater.downloadAndInstall();
