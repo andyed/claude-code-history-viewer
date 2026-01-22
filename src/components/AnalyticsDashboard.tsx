@@ -555,10 +555,10 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({ isViewin
   // ============================================
   const TokenDistributionChart = ({ distribution, total }: { distribution: { input: number; output: number; cache_creation: number; cache_read: number }; total: number }) => {
     const items = [
-      { label: "Input", value: distribution.input, color: "var(--metric-green)", icon: TrendingUp },
-      { label: "Output", value: distribution.output, color: "var(--metric-purple)", icon: Zap },
-      { label: "Cache Write", value: distribution.cache_creation, color: "var(--metric-blue)", icon: Database },
-      { label: "Cache Read", value: distribution.cache_read, color: "var(--metric-amber)", icon: Eye },
+      { label: t("analytics.input"), value: distribution.input, color: "var(--metric-green)", icon: TrendingUp },
+      { label: t("analytics.output"), value: distribution.output, color: "var(--metric-purple)", icon: Zap },
+      { label: t("analytics.cacheCreation"), value: distribution.cache_creation, color: "var(--metric-blue)", icon: Database },
+      { label: t("analytics.cacheRead"), value: distribution.cache_read, color: "var(--metric-amber)", icon: Eye },
     ];
 
     // Guard against division by zero
